@@ -1,28 +1,42 @@
 #!/usr/bin/python3
-"""
-You have n number of locked boxes in front of you.
-Each box is numbered sequentially from 0 to n - 1
-and each box may contain keys to the other boxes
+"""A python module that determines if all boxes can be opened
+   from a list of lists
 """
 
 
-def canUnlockAll(boxes):
+def canUnlockAll(boxes=[]):
+    """A function that returns True of all box in
+    boxes can be opend
     """
-    Description:
-    Write a method that determines if all the boxes can be opened
-    Arguments:
-    boxes --> List of Lists, it contains the boxes with keys
-    Reurn boolean
-    Variables:
-    myKeys --> List, Store the number keys to open boxes
-    key --> integer, key of the myKeys
-    boxKey --> iinteger, key inside of an specific box
-    """
-    myKeys = [0]
-    for key in myKeys:
-        for boxKey in boxes[key]:
-            if boxKey not in myKeys and boxKey < len(boxes):
-                myKeys.append(boxKey)
-    if len(myKeys) == len(boxes):
-        return True
-    return False
+    if not boxes:
+        return False
+
+    keys = set([0])
+    for box_id, box in enumerate(boxes):
+        for key in box:
+            if key < len(boxes) and key != box_id:
+                keys.add(key)
+
+    if len(keys) != len(boxes):
+        return False
+
+    return True
+
+
+if __name__ == '__main__':
+    boxes = [
+                [1, 3],
+                [2],
+                [3, 0],
+                [1, 2, 3],
+            ]
+    print(unlockBoxes(boxes))
+
+    boxes = [[1], [2], [3], [4], []]
+    print(canUnlockAll(boxes))
+
+    boxes = [[1, 4, 6], [2], [0, 4, 1], [5, 6, 2], [3], [4, 1], [6]]
+    print(unlockBoxes(boxes))
+
+    boxes = [[1, 4], [2], [0, 4, 1], [3], [], [4, 1], [5, 6]]
+    print(unlockBoxes(boxes))
